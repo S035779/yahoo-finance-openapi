@@ -1,4 +1,3 @@
-OPENAPI_VERSION := 5.2.0
 
 .PHONY: clean
 clean: | clean-go
@@ -14,14 +13,22 @@ clean-go:
 
 .PHONY: generate-go-sdk
 generate-go-sdk: | clean
-	@docker run --rm \
-		-v `pwd`:/workspace \
-		openapitools/openapi-generator-cli:v${OPENAPI_VERSION} \
-		generate -i /workspace/query1.yml -g go -o /workspace/gen/go/yq1 -c /workspace/query1-config-go.yml --git-repo-id yahoo-finance-openapi/gen/go --git-user-id pasdam
-	@docker run --rm \
-		-v `pwd`:/workspace \
-		openapitools/openapi-generator-cli:v${OPENAPI_VERSION} \
-		generate -i /workspace/query2.yml -g go -o /workspace/gen/go/yq2 -c /workspace/query2-config-go.yml --git-repo-id yahoo-finance-openapi/gen/go --git-user-id pasdam
+	@openapi-generator-cli \
+		generate \
+		-i query1.yml \
+		-g go \
+		-o ./gen/go/yq1 \
+		-c query1-config-go.yml \
+		--git-repo-id yahoo-finance-openapi/gen/go \
+		--git-user-id S035779
+	@openapi-generator-cli \
+		generate \
+		-i query2.yml \
+		-g go \
+		-o ./gen/go/yq2 \
+		-c query2-config-go.yml \
+		--git-repo-id yahoo-finance-openapi/gen/go \
+		--git-user-id S035779
 
 .PHONY: version
 version:
