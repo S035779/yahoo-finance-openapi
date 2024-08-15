@@ -90,7 +90,7 @@ func (r ApiGetChartRequest) Tsrc(tsrc string) ApiGetChartRequest {
 	return r
 }
 
-func (r ApiGetChartRequest) Cookie(cookies []string) ApiGetChartRequest {
+func (r ApiGetChartRequest) Cookies(cookies []string) ApiGetChartRequest {
 	r.cookies = &cookies
 	return r
 }
