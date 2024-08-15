@@ -37,7 +37,7 @@ type ApiGetChartRequest struct {
 	useYfid *bool
 	corsDomain *string
 	tsrc *string
-	cookie *string
+	cookies *[]string
 }
 
 func (r ApiGetChartRequest) Interval(interval Interval) ApiGetChartRequest {
@@ -90,8 +90,8 @@ func (r ApiGetChartRequest) Tsrc(tsrc string) ApiGetChartRequest {
 	return r
 }
 
-func (r ApiGetChartRequest) Cookie(cookie string) ApiGetChartRequest {
-	r.cookie = &cookie
+func (r ApiGetChartRequest) Cookie(cookies []string) ApiGetChartRequest {
+	r.cookies = &cookies
 	return r
 }
 
@@ -195,21 +195,12 @@ func (a *ChartAPIService) GetChartExecute(r ApiGetChartRequest) (*ChartResponse,
 	}
 
 	// to determine the Cookie header
-	localVarHTTPHeaderCookies := []string{}
+	localVarHTTPHeaderCookies := *r.cookies
 
 	// set Cookie header
 	localVarHTTPHeaderCookie := selectHeaderCookie(localVarHTTPHeaderCookies)
 	if localVarHTTPHeaderCookie != "" {
 		localVarHeaderParams["Cookie"] = localVarHTTPHeaderCookie
-	}
-
-	// to determine the User-Agent header
-	localVarHTTPHeaderUserAgents := []string{"Modilla/5.0"}
-
-	// set User-Agent header
-	localVarHTTPHeaderUserAgent := selectHeaderUserAgent(localVarHTTPHeaderUserAgents)
-	if localVarHTTPHeaderUserAgent != "" {
-		localVarHeaderParams["User-Agent"] = localVarHTTPHeaderUserAgent
 	}
 
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
