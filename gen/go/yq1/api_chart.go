@@ -37,6 +37,7 @@ type ApiGetChartRequest struct {
 	useYfid *bool
 	corsDomain *string
 	tsrc *string
+	cookie *string
 }
 
 func (r ApiGetChartRequest) Interval(interval Interval) ApiGetChartRequest {
@@ -88,6 +89,12 @@ func (r ApiGetChartRequest) Tsrc(tsrc string) ApiGetChartRequest {
 	r.tsrc = &tsrc
 	return r
 }
+
+func (r ApiGetChartRequest) Cookie(cookie string) ApiGetChartRequest {
+	r.cookie = &cookie
+	return r
+}
+
 
 func (r ApiGetChartRequest) Execute() (*ChartResponse, *http.Response, error) {
 	return r.ApiService.GetChartExecute(r)
@@ -186,6 +193,25 @@ func (a *ChartAPIService) GetChartExecute(r ApiGetChartRequest) (*ChartResponse,
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
+
+	// to determine the Cookie header
+	localVarHTTPHeaderCookies := []string{}
+
+	// set Cookie header
+	localVarHTTPHeaderCookie := selectHeaderCookie(localVarHTTPHeaderCookies)
+	if localVarHTTPHeaderCookie != "" {
+		localVarHeaderParams["Cookie"] = localVarHTTPHeaderCookie
+	}
+
+	// to determine the User-Agent header
+	localVarHTTPHeaderUserAgents := []string{"Modilla/5.0"}
+
+	// set User-Agent header
+	localVarHTTPHeaderUserAgent := selectHeaderUserAgent(localVarHTTPHeaderUserAgents)
+	if localVarHTTPHeaderUserAgent != "" {
+		localVarHeaderParams["User-Agent"] = localVarHTTPHeaderUserAgent
+	}
+
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err

@@ -107,6 +107,23 @@ func selectHeaderAccept(accepts []string) string {
 	return strings.Join(accepts, ",")
 }
 
+func selectHeaderCookie(cookies []string) string {
+	if len(cookies) == 0 {
+		return ""
+	}
+	return strings.Join(cookies, "; ")
+}
+
+func selectHeaderUserAgent(userAgents []string) string {
+	if len(userAgents) == 0 {
+		return ""
+	}
+	if contains(userAgents, "Mozilla/5.0") {
+		return "Mozilla/5.0"
+	}
+	return userAgents[0] // use the first content type specified in 'consumes'
+}
+
 // contains is a case insensitive match, finding needle in a haystack
 func contains(haystack []string, needle string) bool {
 	for _, a := range haystack {
