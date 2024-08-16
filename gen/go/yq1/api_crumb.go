@@ -68,7 +68,7 @@ func (a *CrumbAPIService) GetCrumbExecute(r ApiGetCrumbRequest) (string, *http.R
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/v1/test/crumb"
+	localVarPath := localBasePath + "/v1/test/getcrumb"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}

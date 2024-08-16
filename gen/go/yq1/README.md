@@ -80,7 +80,7 @@ All URIs are relative to *https://query1.finance.yahoo.com*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *ChartAPI* | [**GetChart**](docs/ChartAPI.md#getchart) | **Get** /v8/finance/chart/{symbol} | 
-*CrumbAPI* | [**GetCrumb**](docs/CrumbAPI.md#getcrumb) | **Get** /v1/test/crumb | Retrieve crumb for authentication
+*CrumbAPI* | [**GetCrumb**](docs/CrumbAPI.md#getcrumb) | **Get** /v1/test/getcrumb | Retrieve crumb for authentication
 *DownloadAPI* | [**Download**](docs/DownloadAPI.md#download) | **Get** /v7/finance/download/{symbol} | Download financial data for a specific symbol
 *QuoteAPI* | [**GetQuote**](docs/QuoteAPI.md#getquote) | **Get** /v7/finance/quote | Returns quotes for the specified symbols
 *SparkAPI* | [**Spark**](docs/SparkAPI.md#spark) | **Get** /v7/finance/spark | 

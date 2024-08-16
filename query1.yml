@@ -293,7 +293,7 @@ paths:
           description: Symbol not found
         '500':
           description: Internal server error
-  /v1/test/crumb:
+  /v1/test/getcrumb:
     get:
       summary: Retrieve crumb for authentication
       description: Retrieve crumb for Yahoo Finance API authentication
