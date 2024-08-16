@@ -15,6 +15,7 @@ tags:
   - name: chart
   - name: quote
   - name: spark
+  - name: download
 paths:
   '/v8/finance/chart/{symbol}':
     get:
@@ -225,6 +226,8 @@ paths:
       summary: Download financial data for a specific symbol
       description: Retrieve financial data in CSV format for the given symbol
       operationId: Download
+      tags:
+        - download
       parameters:
         - name: symbol
           in: path

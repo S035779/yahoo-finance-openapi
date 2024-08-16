@@ -21,12 +21,12 @@ import (
 )
 
 
-// DefaultAPIService DefaultAPI service
-type DefaultAPIService service
+// DownloadAPIService DownloadAPI service
+type DownloadAPIService service
 
 type ApiDownloadRequest struct {
 	ctx context.Context
-	ApiService *DefaultAPIService
+	ApiService *DownloadAPIService
 	symbol string
 	period1 *int32
 	period2 *int32
@@ -85,7 +85,7 @@ Retrieve financial data in CSV format for the given symbol
  @param symbol The stock symbol to download data for
  @return ApiDownloadRequest
 */
-func (a *DefaultAPIService) Download(ctx context.Context, symbol string) ApiDownloadRequest {
+func (a *DownloadAPIService) Download(ctx context.Context, symbol string) ApiDownloadRequest {
 	return ApiDownloadRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -95,7 +95,7 @@ func (a *DefaultAPIService) Download(ctx context.Context, symbol string) ApiDown
 
 // Execute executes the request
 //  @return *os.File
-func (a *DefaultAPIService) DownloadExecute(r ApiDownloadRequest) (*os.File, *http.Response, error) {
+func (a *DownloadAPIService) DownloadExecute(r ApiDownloadRequest) (*os.File, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
@@ -103,7 +103,7 @@ func (a *DefaultAPIService) DownloadExecute(r ApiDownloadRequest) (*os.File, *ht
 		localVarReturnValue  *os.File
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.Download")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DownloadAPIService.Download")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
