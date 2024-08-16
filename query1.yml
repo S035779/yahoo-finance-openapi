@@ -16,6 +16,7 @@ tags:
   - name: quote
   - name: spark
   - name: download
+  - name: crumb
 paths:
   '/v8/finance/chart/{symbol}':
     get:
@@ -221,7 +222,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/QuoteResponse'
-  /v7/finance/download/{symbol}:
+  '/v7/finance/download/{symbol}':
     get:
       summary: Download financial data for a specific symbol
       description: Retrieve financial data in CSV format for the given symbol
@@ -290,6 +291,32 @@ paths:
           description: Bad request
         '404':
           description: Symbol not found
+        '500':
+          description: Internal server error
+  /v1/test/crumb:
+    get:
+      summary: Retrieve crumb for authentication
+      description: Retrieve crumb for Yahoo Finance API authentication
+      operationId: getCrumb
+      tags:
+        - crumb
+      parameters:
+        - name: A1
+          in: cookie
+          required: true
+          description: Yahoo cookie A1 for authentication
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved crumb
+          content:
+            text/plain:
+              schema:
+                type: string
+                description: Yahoo cookie crumb
+        '400':
+          description: Bad request
         '500':
           description: Internal server error
 components:
