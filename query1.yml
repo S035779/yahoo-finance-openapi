@@ -89,6 +89,18 @@ paths:
             type: string
             enum:
               - finance
+        - name: Crumb
+          in: cookie
+          required: true
+          schema:
+            type: string
+          description: Yahoo cookie crumb
+        - name: A1
+          in: cookie
+          required: true
+          schema:
+            type: string
+          description: Yahoo cookie A1
       responses:
         '200':
           description: OK

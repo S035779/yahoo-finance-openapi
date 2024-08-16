@@ -30,6 +30,8 @@ type ApiGetChartRequest struct {
 	interval *Interval
 	period1 *int64
 	period2 *int64
+	crumb *string
+	a1 *string
 	region *string
 	includePrePost *bool
 	events *[]string
@@ -37,7 +39,6 @@ type ApiGetChartRequest struct {
 	useYfid *bool
 	corsDomain *string
 	tsrc *string
-	cookies *[]string
 }
 
 func (r ApiGetChartRequest) Interval(interval Interval) ApiGetChartRequest {
@@ -52,6 +53,18 @@ func (r ApiGetChartRequest) Period1(period1 int64) ApiGetChartRequest {
 
 func (r ApiGetChartRequest) Period2(period2 int64) ApiGetChartRequest {
 	r.period2 = &period2
+	return r
+}
+
+// Yahoo cookie crumb
+func (r ApiGetChartRequest) Crumb(crumb string) ApiGetChartRequest {
+	r.crumb = &crumb
+	return r
+}
+
+// Yahoo cookie A1
+func (r ApiGetChartRequest) A1(a1 string) ApiGetChartRequest {
+	r.a1 = &a1
 	return r
 }
 
@@ -89,12 +102,6 @@ func (r ApiGetChartRequest) Tsrc(tsrc string) ApiGetChartRequest {
 	r.tsrc = &tsrc
 	return r
 }
-
-func (r ApiGetChartRequest) Cookies(cookies []string) ApiGetChartRequest {
-	r.cookies = &cookies
-	return r
-}
-
 
 func (r ApiGetChartRequest) Execute() (*ChartResponse, *http.Response, error) {
 	return r.ApiService.GetChartExecute(r)
@@ -145,6 +152,12 @@ func (a *ChartAPIService) GetChartExecute(r ApiGetChartRequest) (*ChartResponse,
 	if r.period2 == nil {
 		return localVarReturnValue, nil, reportError("period2 is required and must be specified")
 	}
+	if r.crumb == nil {
+		return localVarReturnValue, nil, reportError("crumb is required and must be specified")
+	}
+	if r.a1 == nil {
+		return localVarReturnValue, nil, reportError("a1 is required and must be specified")
+	}
 
 	if r.region != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "region", r.region, "")
@@ -193,16 +206,6 @@ func (a *ChartAPIService) GetChartExecute(r ApiGetChartRequest) (*ChartResponse,
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-
-	// to determine the Cookie header
-	localVarHTTPHeaderCookies := *r.cookies
-
-	// set Cookie header
-	localVarHTTPHeaderCookie := selectHeaderCookie(localVarHTTPHeaderCookies)
-	if localVarHTTPHeaderCookie != "" {
-		localVarHeaderParams["Cookie"] = localVarHTTPHeaderCookie
-	}
-
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err

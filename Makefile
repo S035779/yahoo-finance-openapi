@@ -13,16 +13,14 @@ clean-go:
 
 .PHONY: generate-go-sdk
 generate-go-sdk: | clean
-	@openapi-generator-cli \
-		generate \
+	@openapi-generator-cli generate \
 		-i query1.yml \
 		-g go \
 		-o ./gen/go/yq1 \
 		-c query1-config-go.yml \
 		--git-repo-id yahoo-finance-openapi/gen/go \
 		--git-user-id S035779
-	@openapi-generator-cli \
-		generate \
+	@openapi-generator-cli generate \
 		-i query2.yml \
 		-g go \
 		-o ./gen/go/yq2 \
