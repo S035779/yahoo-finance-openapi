@@ -108,6 +108,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ChartResponse'
+        '400':
+          description: Bad request
+        '404':
+          description: Symbol not found
+        '500':
+          description: Internal server error
   /v7/finance/quote:
     get:
       operationId: GetQuote
@@ -214,6 +220,68 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/QuoteResponse'
+  /v7/finance/download/{symbol}:
+    get:
+      summary: Download financial data for a specific symbol
+      description: Retrieve financial data in CSV format for the given symbol
+      operationId: Download
+      parameters:
+        - name: symbol
+          in: path
+          required: true
+          description: The stock symbol to download data for
+          schema:
+            type: string
+        - name: period1
+          in: query
+          required: true
+          description: The start period for the data (Unix timestamp)
+          schema:
+            type: integer
+        - name: period2
+          in: query
+          required: true
+          description: The end period for the data (Unix timestamp)
+          schema:
+            type: integer
+        - name: interval
+          in: query
+          required: true
+          description: The data interval (e.g., 1d, 1wk, 1mo)
+          schema:
+            type: string
+        - name: events
+          in: query
+          required: false
+          description: The events to include (e.g., div, split)
+          schema:
+            type: string
+        - name: Crumb
+          in: cookie
+          required: true
+          schema:
+            type: string
+          description: Yahoo cookie crumb
+        - name: A1
+          in: cookie
+          required: true
+          schema:
+            type: string
+          description: Yahoo cookie A1
+      responses:
+        '200':
+          description: Successfully retrieved financial data
+          content:
+            text/csv:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Bad request
+        '404':
+          description: Symbol not found
+        '500':
+          description: Internal server error
 components:
   schemas:
     Error:

@@ -1,5 +1,6 @@
 README.md
 api_chart.go
+api_default.go
 api_quote.go
 api_spark.go
 client.go
@@ -48,4 +49,5 @@ model_spark_response_spark_result_inner_response_inner_meta.go
 model_spark_response_spark_result_inner_response_inner_meta_current_trading_period.go
 model_spark_response_spark_result_inner_response_inner_meta_current_trading_period_pre.go
 response.go
+test/api_default_test.go
 utils.go

@@ -51,6 +51,8 @@ type APIClient struct {
 
 	ChartAPI *ChartAPIService
 
+	DefaultAPI *DefaultAPIService
+
 	QuoteAPI *QuoteAPIService
 
 	SparkAPI *SparkAPIService
@@ -73,6 +75,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 
 	// API Services
 	c.ChartAPI = (*ChartAPIService)(&c.common)
+	c.DefaultAPI = (*DefaultAPIService)(&c.common)
 	c.QuoteAPI = (*QuoteAPIService)(&c.common)
 	c.SparkAPI = (*SparkAPIService)(&c.common)
 
