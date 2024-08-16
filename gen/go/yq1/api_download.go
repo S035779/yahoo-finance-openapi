@@ -28,28 +28,28 @@ type ApiDownloadRequest struct {
 	ctx context.Context
 	ApiService *DownloadAPIService
 	symbol string
-	period1 *int32
-	period2 *int32
-	interval *string
+	period1 *int64
+	period2 *int64
+	interval *Interval
 	crumb *string
 	a1 *string
-	events *string
+	events *[]string
 }
 
 // The start period for the data (Unix timestamp)
-func (r ApiDownloadRequest) Period1(period1 int32) ApiDownloadRequest {
+func (r ApiDownloadRequest) Period1(period1 int64) ApiDownloadRequest {
 	r.period1 = &period1
 	return r
 }
 
 // The end period for the data (Unix timestamp)
-func (r ApiDownloadRequest) Period2(period2 int32) ApiDownloadRequest {
+func (r ApiDownloadRequest) Period2(period2 int64) ApiDownloadRequest {
 	r.period2 = &period2
 	return r
 }
 
 // The data interval (e.g., 1d, 1wk, 1mo)
-func (r ApiDownloadRequest) Interval(interval string) ApiDownloadRequest {
+func (r ApiDownloadRequest) Interval(interval Interval) ApiDownloadRequest {
 	r.interval = &interval
 	return r
 }
@@ -67,7 +67,7 @@ func (r ApiDownloadRequest) A1(a1 string) ApiDownloadRequest {
 }
 
 // The events to include (e.g., div, split)
-func (r ApiDownloadRequest) Events(events string) ApiDownloadRequest {
+func (r ApiDownloadRequest) Events(events []string) ApiDownloadRequest {
 	r.events = &events
 	return r
 }
@@ -134,7 +134,7 @@ func (a *DownloadAPIService) DownloadExecute(r ApiDownloadRequest) (*os.File, *h
 	parameterAddToHeaderOrQuery(localVarQueryParams, "period2", r.period2, "")
 	parameterAddToHeaderOrQuery(localVarQueryParams, "interval", r.interval, "")
 	if r.events != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "events", r.events, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "events", r.events, "pipes")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
