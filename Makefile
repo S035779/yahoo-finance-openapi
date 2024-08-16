@@ -16,6 +16,7 @@ generate-go-sdk: | clean
 	@openapi-generator-cli generate \
 		-i query1.yml \
 		-g go \
+		-t ./gen/go/templates1 \
 		-o ./gen/go/yq1 \
 		-c query1-config-go.yml \
 		--git-repo-id yahoo-finance-openapi/gen/go \
@@ -23,10 +24,20 @@ generate-go-sdk: | clean
 	@openapi-generator-cli generate \
 		-i query2.yml \
 		-g go \
+		-t ./gen/go/templates2 \
 		-o ./gen/go/yq2 \
 		-c query2-config-go.yml \
 		--git-repo-id yahoo-finance-openapi/gen/go \
 		--git-user-id S035779
+
+.PHONY: authorize-go-templates
+authorize-go-template: | clean
+	@openapi-generator-cli author template \
+		-g go \
+		-o ./gen/go/templates1
+	@openapi-generator-cli author template \
+		-g go \
+		-o ./gen/go/templates2
 
 .PHONY: version
 version:
