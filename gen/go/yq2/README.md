@@ -80,6 +80,7 @@ All URIs are relative to *https://query2.finance.yahoo.com*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *ChartAPI* | [**GetChart**](docs/ChartAPI.md#getchart) | **Get** /v10/finance/quoteSummary/{symbol} | 
+*CrumbAPI* | [**GetCrumb**](docs/CrumbAPI.md#getcrumb) | **Get** /v1/test/getcrumb | Retrieve crumb for authentication
 
 
 ## Documentation For Models

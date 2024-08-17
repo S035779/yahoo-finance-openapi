@@ -243,6 +243,21 @@ func (a *{{{classname}}}Service) {{nickname}}Execute(r {{#structPrefix}}{{&class
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
+
+	// to determine the Cookie header
+	localVarHTTPCookies := []http.Cookie{}
+{{#cookieParams}}
+	if *r.{{paramName}} != "" {
+		localVarHTTPCookies = append(localVarHTTPCookies, http.Cookie{Name:"{{baseName}}",Value:*r.{{paramName}}})
+	}
+{{/cookieParams}}
+
+	// set Cookie header
+	localVarHTTPCookie := selectHeaderCookie(localVarHTTPCookies)
+	if localVarHTTPCookie != "" {
+		localVarHeaderParams["Cookie"] = localVarHTTPCookie
+	}
+
 {{#headerParams}}
 	{{#required}}
 	parameterAddToHeaderOrQuery(localVarHeaderParams, "{{{baseName}}}", r.{{paramName}}, "{{collectionFormat}}")

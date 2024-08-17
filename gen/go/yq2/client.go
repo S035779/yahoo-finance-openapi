@@ -50,6 +50,8 @@ type APIClient struct {
 	// API Services
 
 	ChartAPI *ChartAPIService
+
+	CrumbAPI *CrumbAPIService
 }
 
 type service struct {
@@ -69,6 +71,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 
 	// API Services
 	c.ChartAPI = (*ChartAPIService)(&c.common)
+	c.CrumbAPI = (*CrumbAPIService)(&c.common)
 
 	return c
 }
@@ -99,6 +102,23 @@ func selectHeaderAccept(accepts []string) string {
 	}
 
 	return strings.Join(accepts, ",")
+}
+
+// selectHeaderCookie join cookie and return
+func selectHeaderCookie(cookies []http.Cookie) string {
+	if len(cookies) == 0 {
+		return ""
+	}
+
+	var cookieValues string
+	for _, cookie := range cookies {
+		if cookieValues != "" {
+			cookieValues += "; "
+		}
+		cookieValues += fmt.Sprintf("%s=%s", cookie.Name, cookie.Value)
+	}
+
+	return cookieValues
 }
 
 // contains is a case insensitive match, finding needle in a haystack

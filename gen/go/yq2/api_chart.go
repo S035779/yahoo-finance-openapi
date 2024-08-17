@@ -32,6 +32,8 @@ type ApiGetChartRequest struct {
 	region *string
 	modules *[]string
 	corsDomain *string
+	crumb2 *string
+	a1 *string
 	crumb *string
 }
 
@@ -57,6 +59,18 @@ func (r ApiGetChartRequest) Modules(modules []string) ApiGetChartRequest {
 
 func (r ApiGetChartRequest) CorsDomain(corsDomain string) ApiGetChartRequest {
 	r.corsDomain = &corsDomain
+	return r
+}
+
+// Yahoo cookie crumb
+func (r ApiGetChartRequest) Crumb2(crumb2 string) ApiGetChartRequest {
+	r.crumb2 = &crumb2
+	return r
+}
+
+// Yahoo cookie A1 for authentication
+func (r ApiGetChartRequest) A1(a1 string) ApiGetChartRequest {
+	r.a1 = &a1
 	return r
 }
 
@@ -120,6 +134,12 @@ func (a *ChartAPIService) GetChartExecute(r ApiGetChartRequest) (*QuoteSummary, 
 	if r.corsDomain == nil {
 		return localVarReturnValue, nil, reportError("corsDomain is required and must be specified")
 	}
+	if r.crumb2 == nil {
+		return localVarReturnValue, nil, reportError("crumb2 is required and must be specified")
+	}
+	if r.a1 == nil {
+		return localVarReturnValue, nil, reportError("a1 is required and must be specified")
+	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "formatted", r.formatted, "")
 	if r.crumb != nil {
@@ -146,6 +166,22 @@ func (a *ChartAPIService) GetChartExecute(r ApiGetChartRequest) (*QuoteSummary, 
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
+
+	// to determine the Cookie header
+	localVarHTTPCookies := []http.Cookie{}
+	if *r.crumb2 != "" {
+		localVarHTTPCookies = append(localVarHTTPCookies, http.Cookie{Name:"Crumb",Value:*r.crumb2})
+	}
+	if *r.a1 != "" {
+		localVarHTTPCookies = append(localVarHTTPCookies, http.Cookie{Name:"A1",Value:*r.a1})
+	}
+
+	// set Cookie header
+	localVarHTTPCookie := selectHeaderCookie(localVarHTTPCookies)
+	if localVarHTTPCookie != "" {
+		localVarHeaderParams["Cookie"] = localVarHTTPCookie
+	}
+
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err

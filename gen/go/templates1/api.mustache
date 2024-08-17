@@ -245,18 +245,12 @@ func (a *{{{classname}}}Service) {{nickname}}Execute(r {{#structPrefix}}{{&class
 	}
 	
 	// to determine the Cookies header
-{{=<% %>=}}
-	localVarHTTPCookies := []string{}
-	if r.a1 != nil && *r.a1 != "" {
-		localVarHTTPCookies = append(localVarHTTPCookies, *r.a1)
-	} else {
-		localVarHTTPCookies = append(localVarHTTPCookies, "")
+	localVarHTTPCookies := []http.Cookie{}
+{{#cookieParams}}
+	if *r.{{paramName}} != "" {
+		localVarHTTPCookies = append(localVarHTTPCookies, http.Cookie{Name:"{{baseName}}",Value:*r.{{paramName}}})
 	}
-
-	if r.crumb != nil && *r.crumb != "" {
-		localVarHTTPCookies = append(localVarHTTPCookies, *r.crumb)
-	}
-<%={{ }}=%>
+{{/cookieParams}}
 
 	// set Cookie header
 	localVarHTTPCookie := selectHeaderCookie(localVarHTTPCookies)

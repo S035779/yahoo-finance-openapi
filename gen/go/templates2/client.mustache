@@ -111,6 +111,23 @@ func selectHeaderAccept(accepts []string) string {
 	return strings.Join(accepts, ",")
 }
 
+// selectHeaderCookie join cookie and return
+func selectHeaderCookie(cookies []http.Cookie) string {
+	if len(cookies) == 0 {
+		return ""
+	}
+
+	var cookieValues string
+	for _, cookie := range cookies {
+		if cookieValues != "" {
+			cookieValues += "; "
+		}
+		cookieValues += fmt.Sprintf("%s=%s", cookie.Name, cookie.Value)
+	}
+
+	return cookieValues
+}
+
 // contains is a case insensitive match, finding needle in a haystack
 func contains(haystack []string, needle string) bool {
 	for _, a := range haystack {

@@ -13,7 +13,7 @@ servers:
   - url: 'https://query2.finance.yahoo.com'
 tags:
   - name: quoteSummary
-
+  - name: crumb
 paths:
   '/v10/finance/quoteSummary/{symbol}':
     get:
@@ -87,6 +87,18 @@ paths:
             type: string
             enum:
               - finance.yahoo.com
+        - name: Crumb
+          in: cookie
+          required: true
+          schema:
+            type: string
+          description: Yahoo cookie crumb
+        - name: A1
+          in: cookie
+          required: true
+          schema:
+            type: string
+          description: Yahoo cookie A1 for authentication
       responses:
         '200':
           description: OK
@@ -94,7 +106,38 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/QuoteSummary'
-
+        '400':
+          description: Bad request
+        '404':
+          description: Symbol not found
+        '500':
+          description: Internal server error
+  /v1/test/getcrumb:
+    get:
+      summary: Retrieve crumb for authentication
+      description: Retrieve crumb for Yahoo Finance API authentication
+      operationId: getCrumb
+      tags:
+        - crumb
+      parameters:
+        - name: A1
+          in: cookie
+          required: true
+          schema:
+            type: string
+          description: Yahoo cookie A1 for authentication
+      responses:
+        '200':
+          description: Successfully retrieved crumb
+          content:
+            text/plain:
+              schema:
+                type: string
+                description: Yahoo cookie crumb
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
 components:
   schemas:
     Error:

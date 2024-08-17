@@ -114,24 +114,12 @@ func selectHeaderAccept(accepts []string) string {
 }
 
 // selectHeaderCookie join cookie and return
-func selectHeaderCookie(cookieParams []string) string {
-	if len(cookieParams) == 0 {
+func selectHeaderCookie(cookies []http.Cookie) string {
+	if len(cookies) == 0 {
 		return ""
 	}
 	
-	cookies := []http.Cookie{}
-	if len(cookieParams) == 1 {
-		cookies = []http.Cookie{
-			{Name: "A1", Value: cookieParams[0]},
-		}
-	} else {
-		cookies = []http.Cookie{
-			{Name: "A1", Value: cookieParams[0]},
-			{Name: "Crumb", Value: cookieParams[1]},
-		}
-	}
-
-	cookieValues := ""
+	var cookieValues string
 	for _, cookie := range cookies {
 		if cookieValues != "" {
 			cookieValues += "; "
