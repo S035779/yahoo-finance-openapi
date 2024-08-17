@@ -118,10 +118,17 @@ func selectHeaderCookie(cookieParams []string) string {
 	if len(cookieParams) == 0 {
 		return ""
 	}
-
-	cookies := []http.Cookie{
-		{Name: "A1", Value: cookieParams[0]},
-		{Name: "Crumb", Value: cookieParams[1]},
+	
+	cookies := []http.Cookie{}
+	if len(cookieParams) == 1 {
+		cookies = []http.Cookie{
+			{Name: "A1", Value: cookieParams[0]},
+		}
+	} else {
+		cookies = []http.Cookie{
+			{Name: "A1", Value: cookieParams[0]},
+			{Name: "Crumb", Value: cookieParams[1]},
+		}
 	}
 
 	cookieValues := ""
