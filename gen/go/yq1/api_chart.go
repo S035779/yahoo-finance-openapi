@@ -62,7 +62,7 @@ func (r ApiGetChartRequest) Crumb(crumb string) ApiGetChartRequest {
 	return r
 }
 
-// Yahoo cookie A1
+// Yahoo cookie A1 for authentication
 func (r ApiGetChartRequest) A1(a1 string) ApiGetChartRequest {
 	r.a1 = &a1
 	return r
@@ -206,6 +206,25 @@ func (a *ChartAPIService) GetChartExecute(r ApiGetChartRequest) (*ChartResponse,
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
+	
+	// to determine the Cookies header
+	localVarHTTPCookies := []string{}
+	if r.a1 != nil && *r.a1 != "" {
+		localVarHTTPCookies = append(localVarHTTPCookies, *r.a1)
+	} else {
+		localVarHTTPCookies = append(localVarHTTPCookies, "")
+	}
+
+	if r.crumb != nil && *r.crumb != "" {
+		localVarHTTPCookies = append(localVarHTTPCookies, *r.crumb)
+	}
+
+	// set Cookie header
+	localVarHTTPCookie := selectHeaderCookie(localVarHTTPCookies)
+	if localVarHTTPCookie != "" {
+		localVarHeaderParams["Cookie"] = localVarHTTPCookie
+	}
+
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err

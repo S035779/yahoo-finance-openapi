@@ -28,6 +28,8 @@ type ApiSparkRequest struct {
 	interval *Interval
 	range_ *Range
 	symbols *string
+	crumb *string
+	a1 *string
 	lang *string
 	includePrePost *bool
 	includeTimestamps *bool
@@ -47,6 +49,18 @@ func (r ApiSparkRequest) Range_(range_ Range) ApiSparkRequest {
 
 func (r ApiSparkRequest) Symbols(symbols string) ApiSparkRequest {
 	r.symbols = &symbols
+	return r
+}
+
+// Yahoo cookie crumb
+func (r ApiSparkRequest) Crumb(crumb string) ApiSparkRequest {
+	r.crumb = &crumb
+	return r
+}
+
+// Yahoo cookie A1 for authentication
+func (r ApiSparkRequest) A1(a1 string) ApiSparkRequest {
+	r.a1 = &a1
 	return r
 }
 
@@ -121,6 +135,12 @@ func (a *SparkAPIService) SparkExecute(r ApiSparkRequest) (*QuoteResponse, *http
 	if r.symbols == nil {
 		return localVarReturnValue, nil, reportError("symbols is required and must be specified")
 	}
+	if r.crumb == nil {
+		return localVarReturnValue, nil, reportError("crumb is required and must be specified")
+	}
+	if r.a1 == nil {
+		return localVarReturnValue, nil, reportError("a1 is required and must be specified")
+	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "interval", r.interval, "")
 	parameterAddToHeaderOrQuery(localVarQueryParams, "range", r.range_, "")
@@ -163,6 +183,25 @@ func (a *SparkAPIService) SparkExecute(r ApiSparkRequest) (*QuoteResponse, *http
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
+	
+	// to determine the Cookies header
+	localVarHTTPCookies := []string{}
+	if r.a1 != nil && *r.a1 != "" {
+		localVarHTTPCookies = append(localVarHTTPCookies, *r.a1)
+	} else {
+		localVarHTTPCookies = append(localVarHTTPCookies, "")
+	}
+
+	if r.crumb != nil && *r.crumb != "" {
+		localVarHTTPCookies = append(localVarHTTPCookies, *r.crumb)
+	}
+
+	// set Cookie header
+	localVarHTTPCookie := selectHeaderCookie(localVarHTTPCookies)
+	if localVarHTTPCookie != "" {
+		localVarHeaderParams["Cookie"] = localVarHTTPCookie
+	}
+
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err

@@ -25,7 +25,14 @@ type CrumbAPIService service
 type ApiGetCrumbRequest struct {
 	ctx context.Context
 	ApiService *CrumbAPIService
+	crumb *string
 	a1 *string
+}
+
+// Yahoo cookie crumb
+func (r ApiGetCrumbRequest) Crumb(crumb string) ApiGetCrumbRequest {
+	r.crumb = &crumb
+	return r
 }
 
 // Yahoo cookie A1 for authentication
@@ -73,6 +80,9 @@ func (a *CrumbAPIService) GetCrumbExecute(r ApiGetCrumbRequest) (string, *http.R
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.crumb == nil {
+		return localVarReturnValue, nil, reportError("crumb is required and must be specified")
+	}
 	if r.a1 == nil {
 		return localVarReturnValue, nil, reportError("a1 is required and must be specified")
 	}
@@ -94,6 +104,25 @@ func (a *CrumbAPIService) GetCrumbExecute(r ApiGetCrumbRequest) (string, *http.R
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
+	
+	// to determine the Cookies header
+	localVarHTTPCookies := []string{}
+	if r.a1 != nil && *r.a1 != "" {
+		localVarHTTPCookies = append(localVarHTTPCookies, *r.a1)
+	} else {
+		localVarHTTPCookies = append(localVarHTTPCookies, "")
+	}
+
+	if r.crumb != nil && *r.crumb != "" {
+		localVarHTTPCookies = append(localVarHTTPCookies, *r.crumb)
+	}
+
+	// set Cookie header
+	localVarHTTPCookie := selectHeaderCookie(localVarHTTPCookies)
+	if localVarHTTPCookie != "" {
+		localVarHeaderParams["Cookie"] = localVarHTTPCookie
+	}
+
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err

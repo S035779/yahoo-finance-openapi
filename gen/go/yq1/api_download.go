@@ -60,7 +60,7 @@ func (r ApiDownloadRequest) Crumb(crumb string) ApiDownloadRequest {
 	return r
 }
 
-// Yahoo cookie A1
+// Yahoo cookie A1 for authentication
 func (r ApiDownloadRequest) A1(a1 string) ApiDownloadRequest {
 	r.a1 = &a1
 	return r
@@ -153,6 +153,25 @@ func (a *DownloadAPIService) DownloadExecute(r ApiDownloadRequest) (*os.File, *h
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
+	
+	// to determine the Cookies header
+	localVarHTTPCookies := []string{}
+	if r.a1 != nil && *r.a1 != "" {
+		localVarHTTPCookies = append(localVarHTTPCookies, *r.a1)
+	} else {
+		localVarHTTPCookies = append(localVarHTTPCookies, "")
+	}
+
+	if r.crumb != nil && *r.crumb != "" {
+		localVarHTTPCookies = append(localVarHTTPCookies, *r.crumb)
+	}
+
+	// set Cookie header
+	localVarHTTPCookie := selectHeaderCookie(localVarHTTPCookies)
+	if localVarHTTPCookie != "" {
+		localVarHeaderParams["Cookie"] = localVarHTTPCookie
+	}
+
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err

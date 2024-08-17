@@ -26,6 +26,8 @@ type ApiGetQuoteRequest struct {
 	ctx context.Context
 	ApiService *QuoteAPIService
 	symbols *string
+	crumb *string
+	a1 *string
 	formatted *bool
 	region *string
 	lang *string
@@ -36,6 +38,18 @@ type ApiGetQuoteRequest struct {
 
 func (r ApiGetQuoteRequest) Symbols(symbols string) ApiGetQuoteRequest {
 	r.symbols = &symbols
+	return r
+}
+
+// Yahoo cookie crumb
+func (r ApiGetQuoteRequest) Crumb(crumb string) ApiGetQuoteRequest {
+	r.crumb = &crumb
+	return r
+}
+
+// Yahoo cookie A1 for authentication
+func (r ApiGetQuoteRequest) A1(a1 string) ApiGetQuoteRequest {
+	r.a1 = &a1
 	return r
 }
 
@@ -111,6 +125,12 @@ func (a *QuoteAPIService) GetQuoteExecute(r ApiGetQuoteRequest) (*QuoteResponse,
 	if r.symbols == nil {
 		return localVarReturnValue, nil, reportError("symbols is required and must be specified")
 	}
+	if r.crumb == nil {
+		return localVarReturnValue, nil, reportError("crumb is required and must be specified")
+	}
+	if r.a1 == nil {
+		return localVarReturnValue, nil, reportError("a1 is required and must be specified")
+	}
 
 	if r.formatted != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "formatted", r.formatted, "")
@@ -154,6 +174,25 @@ func (a *QuoteAPIService) GetQuoteExecute(r ApiGetQuoteRequest) (*QuoteResponse,
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
+	
+	// to determine the Cookies header
+	localVarHTTPCookies := []string{}
+	if r.a1 != nil && *r.a1 != "" {
+		localVarHTTPCookies = append(localVarHTTPCookies, *r.a1)
+	} else {
+		localVarHTTPCookies = append(localVarHTTPCookies, "")
+	}
+
+	if r.crumb != nil && *r.crumb != "" {
+		localVarHTTPCookies = append(localVarHTTPCookies, *r.crumb)
+	}
+
+	// set Cookie header
+	localVarHTTPCookie := selectHeaderCookie(localVarHTTPCookies)
+	if localVarHTTPCookie != "" {
+		localVarHeaderParams["Cookie"] = localVarHTTPCookie
+	}
+
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
