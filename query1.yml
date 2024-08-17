@@ -333,12 +333,6 @@ paths:
       tags:
         - crumb
       parameters:
-        - name: Crumb
-          in: cookie
-          required: true
-          schema:
-            type: string
-          description: Yahoo cookie crumb
         - name: A1
           in: cookie
           required: true
