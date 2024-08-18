@@ -176,12 +176,12 @@ func (a *QuoteAPIService) GetQuoteExecute(r ApiGetQuoteRequest) (*QuoteResponse,
 	}
 	
 	// to determine the Cookies header
-	localVarHTTPCookies := []http.Cookie{}
+	localVarHTTPCookies := make(map[string]string)
 	if *r.crumb != "" {
-		localVarHTTPCookies = append(localVarHTTPCookies, http.Cookie{Name:"Crumb",Value:*r.crumb})
+		localVarHTTPCookies["Crumb"] = *r.crumb
 	}
 	if *r.a1 != "" {
-		localVarHTTPCookies = append(localVarHTTPCookies, http.Cookie{Name:"A1",Value:*r.a1})
+		localVarHTTPCookies["A1"] = *r.a1
 	}
 
 	// set Cookie header

@@ -96,9 +96,9 @@ func (a *CrumbAPIService) GetCrumbExecute(r ApiGetCrumbRequest) (string, *http.R
 	}
 	
 	// to determine the Cookies header
-	localVarHTTPCookies := []http.Cookie{}
+	localVarHTTPCookies := make(map[string]string)
 	if *r.a1 != "" {
-		localVarHTTPCookies = append(localVarHTTPCookies, http.Cookie{Name:"A1",Value:*r.a1})
+		localVarHTTPCookies["A1"] = *r.a1
 	}
 
 	// set Cookie header

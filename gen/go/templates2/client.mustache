@@ -112,17 +112,17 @@ func selectHeaderAccept(accepts []string) string {
 }
 
 // selectHeaderCookie join cookie and return
-func selectHeaderCookie(cookies []http.Cookie) string {
+func selectHeaderCookie(cookies map[string]string) string {
 	if len(cookies) == 0 {
 		return ""
 	}
 
 	var cookieValues string
-	for _, cookie := range cookies {
+	for k, v := range cookies {
 		if cookieValues != "" {
 			cookieValues += "; "
 		}
-		cookieValues += fmt.Sprintf("%s=%s", cookie.Name, cookie.Value)
+		cookieValues += fmt.Sprintf("%s=%s", k, v)
 	}
 
 	return cookieValues

@@ -26,5 +26,4 @@ model_quote_summary_result_inner_esg_scores_peer_highest_controversy_performance
 model_quote_summary_result_inner_esg_scores_total_esg.go
 model_quote_summary_result_inner_summary_profile.go
 response.go
-test/api_crumb_test.go
 utils.go
